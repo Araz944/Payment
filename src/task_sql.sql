@@ -86,3 +86,142 @@ FROM Employees;
 
 SELECT *
 FROM Customers;
+
+-------------------------------------------------------- Lesson 43
+
+CREATE TABLE Sales
+(
+    id       serial primary key,
+    product  varchar,
+    quantity integer,
+    price    decimal
+);
+
+SELECT *
+FROM Sales;
+
+INSERT INTO Sales (product, quantity, price)
+VALUES ('mouse', 10, 20.66),
+       ('iPhone', 40, 720),
+       ('mouse', 50, 17.43),
+       ('mouse', 30, 23.04);
+
+SELECT product,
+       SUM(quantity) AS total_quantity,
+       AVG(price)    AS average_price
+FROM Sales
+GROUP BY product;
+
+SELECT price,
+       SUM(price),
+       AVG(price),
+       MIN(price),
+       MAX(price),
+       COUNT(price)
+FROM Sales
+GROUP BY price;
+
+CREATE TABLE Expenses
+(
+    id       serial primary key,
+    category varchar,
+    amount   decimal
+);
+
+INSERT INTO Expenses (category, amount)
+VALUES ('education', 80),
+       ('food', 120),
+       ('transport', 50),
+       ('housing', 200);
+
+SELECT *
+FROM Expenses;
+
+SELECT category,
+       SUM(amount) AS total_amount,
+       AVG(amount) AS average_amount
+FROM Expenses
+GROUP BY category;
+
+CREATE TABLE Products
+(
+    id    serial primary key,
+    name  varchar,
+    price decimal
+);
+
+INSERT INTO Products (name, price)
+VALUES ('bicycle', 120),
+       ('bicycle', 70),
+       ('bicycle', 85),
+       ('bicycle', 112),
+       ('bicycle', 100);
+
+SELECT *
+FROM Products;
+
+SELECT name,
+       MIN(price) AS minimum,
+       MAX(price) AS maximum
+FROM Products
+GROUP BY name;
+
+-- CREATE TABLE Students (
+--     id INT PRIMARY KEY,
+--     student_name VARCHAR(100)
+-- );
+--
+-- CREATE TABLE Grades (
+--     id INT PRIMARY KEY,
+--     student_id INT,
+--     grade DECIMAL(5,2),
+--     FOREIGN KEY (student_id) REFERENCES Students(id)
+-- );
+--
+-- INSERT INTO Students (id, student_name) VALUES
+-- (1, 'Alice'),
+-- (2, 'Bob'),
+-- (3, 'Charlie'),
+-- (4, 'David');
+--
+-- INSERT INTO Grades (id, student_id, grade) VALUES
+-- (1, 1, 85.0),
+-- (2, 1, 90.0),
+-- (3, 2, 78.0),
+-- (4, 2, 82.0),
+-- (5, 3, 88.0),
+-- (6, 3, 92.0),
+-- (7, 4, 70.0),
+-- (8, 4, 75.0);
+--
+-- SELECT student_name
+-- FROM Students
+-- WHERE id IN (
+--     SELECT student_id
+--     FROM (
+--         SELECT student_id, AVG(grade) AS avg_grade
+--         FROM Grades
+--         GROUP BY student_id
+--     ) AS student_avg
+--     WHERE avg_grade > (
+--         SELECT AVG(grade)
+--         FROM Grades
+--     )
+-- );
+
+CREATE TABLE Students
+(
+    id       serial primary key,
+    name     varchar,
+    avgGrade decimal
+);
+
+INSERT INTO Students (name, avgGrade)
+VALUES ('Alice', 88),
+       ('Charlie', 92),
+       ('Bob', 90),
+       ('David', 82);
+
+SELECT *
+FROM Students
+WHERE avgGrade > (SELECT AVG(avgGrade) FROM Students);
